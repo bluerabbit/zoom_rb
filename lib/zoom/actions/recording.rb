@@ -21,6 +21,12 @@ module Zoom
         options.require(%i[meeting_id recording_id])
         Utils.parse_response self.class.delete("/meetings/#{options[:meeting_id]}/recordings/#{options[:recording_id]}",  query: options.except(:meeting_id, :recording_id), headers: request_headers)
       end
+
+      def meeting_recording_setting_update(*args)
+        options = Zoom::Params.new(Utils.extract_options!(args))
+        options.require(:meeting_id)
+        Utils.parse_response self.class.patch("/meetings/#{options[:meeting_id]}/recordings/settings", body: options.except(:meeting_id).to_json, headers: request_headers)
+      end
     end
   end
 end
